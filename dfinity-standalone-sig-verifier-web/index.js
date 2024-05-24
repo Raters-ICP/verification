@@ -1,4 +1,4 @@
-// import initSigVerifier, { verifyIcSignature } from '@dfinity/standalone-sig-verifier-web';
+//import initSigVerifier, { verifyIcSignature } from '@dfinity/standalone-sig-verifier-web';
 const { initSigVerifier, verifyIcSignature } = require('@dfinity/standalone-sig-verifier-web');
 
 async function example(dataRaw, signatureRaw, derPublicKey, root_key) {
