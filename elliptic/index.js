@@ -1,12 +1,11 @@
 const EC = require("elliptic").ec;
 const nacl = require("tweetnacl");
 
-// Входные данные из JSON
-const expiration = "17d3cbc7f4c87800"
+const expiration = "17d3ccad1b9d67c0"
 const delegationPubKey =
-  "3059301306072a8648ce3d020106082a8648ce3d03010703420004b7cea144553b94c460d8724b1df5d5dfb7eb6e8c616986fa8be95dde23dec7b910b32574974eda5da4411253fba8f3a23820ac3916f0382b79be9b8e0a79fcb8";
+  "3059301306072a8648ce3d020106082a8648ce3d0301070342000458177420282e552e18a382c30a6f662a391516717d7495ffb9ea4c30f9043058fdf409720ad596fa9d73225370630e888aa9482eb6ef28d6de0f622deccd5724";
 const delegationSignature =
-  "6907f22143fb3dcbb9594b2819eb7cf9685bd189dcdbd0868f3c0afdcfe87b7b248b6485694650097396bf054671a080e76fc952f28d83baf8fda2c92f9d6008";
+  "22ca3e5b4805b038a2ade99f3a9193eb242a3308bef403ea4bf9c157a86b5ef9806ab3936b849333d015564370cf20db0690804d5f9d92e60d8a5b19e254420c";
 const publicKeyEd25519 =
   "302a300506032b6570032100a66b42c55c8ba044a7277ebb5413e9c41dd284ef6ac2d2f9eb307f78edd672a4";
 
@@ -44,13 +43,11 @@ function verifyEd25519(pubKey, signature, data) {
   return nacl.sign.detached.verify(data, sigBuffer, pubKey);
 }
 
-// Основная функция для верификации
 function verifyDelegation(delegationPubKey, delegationSignature, publicKeyEd25519) {
   const decodedECDSAPubKey = decodeECDSAPublicKey(delegationPubKey);
   const decodedEd25519PubKey = decodeEd25519PublicKey(publicKeyEd25519);
   const signatureBuffer = Buffer.from(delegationSignature, "hex");
 
-  // Пример данных для проверки (expiration + pubkey)
   const data = Buffer.concat([
     Buffer.from(expiration, "hex"),
     Buffer.from(delegationPubKey, "hex"),
@@ -61,7 +58,7 @@ function verifyDelegation(delegationPubKey, delegationSignature, publicKeyEd2551
 
   const isEd25519Verified = verifyEd25519(decodedEd25519PubKey, signatureBuffer, data);
   console.log('Ed25519 verification result: ', isEd25519Verified);
+
 }
 
-// Запуск верификации
 verifyDelegation(delegationPubKey, delegationSignature, publicKeyEd25519);
