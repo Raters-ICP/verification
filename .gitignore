@@ -130,3 +130,4 @@ dist
 .pnp.*
 dfinity-identity/build/*
 secp256k1/build/*
+tweetnacl/build/*
