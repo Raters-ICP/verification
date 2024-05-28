@@ -1,13 +1,25 @@
 const EC = require("elliptic").ec;
 const nacl = require("tweetnacl");
 
-const expiration = "17d3ccad1b9d67c0"
-const delegationPubKey =
-  "3059301306072a8648ce3d020106082a8648ce3d0301070342000458177420282e552e18a382c30a6f662a391516717d7495ffb9ea4c30f9043058fdf409720ad596fa9d73225370630e888aa9482eb6ef28d6de0f622deccd5724";
-const delegationSignature =
-  "22ca3e5b4805b038a2ade99f3a9193eb242a3308bef403ea4bf9c157a86b5ef9806ab3936b849333d015564370cf20db0690804d5f9d92e60d8a5b19e254420c";
-const publicKeyEd25519 =
-  "302a300506032b6570032100a66b42c55c8ba044a7277ebb5413e9c41dd284ef6ac2d2f9eb307f78edd672a4";
+const delegation = {
+    delegations: [
+      {
+        delegation: {
+          expiration: "17d3cecbdfa36000",
+          pubkey: "3059301306072a8648ce3d020106082a8648ce3d0301070342000420084b1ebe3dc622f322a0cb381e06c46431b7c7ddec28dd256d78e033ad89a80bf43ef01fa0df36c40587d2dd4e16316e955092bb972502c7af2ece4a0f3d0b"
+        },
+        signature: "c45d3a1d878635c2e10dfbae08120d59c2f87b00d4e35057c8d6834ea7c7992ced4092088ad5e22ba3f15931d9ae366a59fe948135a54eb8d1018ee3717aaf05"
+      }
+    ],
+    publicKey: "302a300506032b6570032100a66b42c55c8ba044a7277ebb5413e9c41dd284ef6ac2d2f9eb307f78edd672a4"
+  }
+
+const expiration = delegation.delegations[0].delegation.expiration;
+const delegationSignature = delegation.delegations[0].signature;
+// const delegationPubKey = delegation.delegations[0].delegation.pubkey;
+// const publicKeyEd25519 = delegation.publicKey;
+const delegationPubKey = delegation.delegations[0].delegation.pubkey;
+const publicKeyEd25519 = delegation.publicKey;
 
 // Декодирование ключей
 function decodeECDSAPublicKey(key) {
@@ -54,7 +66,7 @@ function verifyDelegation(delegationPubKey, delegationSignature, publicKeyEd2551
   ]);
 
   const isECDSAVerified = verifyECDSA(decodedECDSAPubKey, signatureBuffer, data);
-  console.log('ECDSA verification result: ', isECDSAVerified);
+  console.log('ECDSA verification result:   ', isECDSAVerified);
 
   const isEd25519Verified = verifyEd25519(decodedEd25519PubKey, signatureBuffer, data);
   console.log('Ed25519 verification result: ', isEd25519Verified);
